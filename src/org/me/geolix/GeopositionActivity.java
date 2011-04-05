@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GeopositionActivity extends Activity implements OnClickListener, LocationListener{
-	private LocationManager lManager;
+    private LocationManager lManager;
     private Location location;
     private String choix_source = "";
 
