@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,26 +28,19 @@ public class GeopositionActivity extends Activity implements OnClickListener, Lo
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-Log.e("JESUIS", "La0");
         super.onCreate(savedInstanceState);
-Log.e("JESUIS", "La1");
-
         //On spécifie que l'on va avoir besoin de gérer l'affichage du cercle de chargement
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-Log.e("JESUIS", "La2");
         setContentView(R.layout.geoposition);
-Log.e("JESUIS", "La3");
         //On récupère le service de localisation
         lManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-Log.e("JESUIS", "La4");
         //Initialisation de l'écran
         reinitialisationEcran();
-Log.e("JESUIS", "La5");
         //On affecte un écouteur d'évènement aux boutons
         findViewById(R.id.choix_source).setOnClickListener(this);
         findViewById(R.id.obtenir_position).setOnClickListener(this);
         findViewById(R.id.afficherAdresse).setOnClickListener(this);
-Log.e("JESUIS", "La6");
+        findViewById(R.id.demarrerService).setOnClickListener(this);
     }
 
         //Méthode déclencher au clique sur un bouton
@@ -61,6 +55,9 @@ Log.e("JESUIS", "La6");
 		case R.id.afficherAdresse:
 			afficherAdresse();
 			break;
+		case R.id.demarrerService:
+			demarrerService();
+			break;
 		default:
 			break;
 		}
@@ -68,19 +65,12 @@ Log.e("JESUIS", "La6");
 
 	//Réinitialisation de l'écran
 	private void reinitialisationEcran(){
-            Log.e("JESUIS", "La41");
 		((TextView)findViewById(R.id.latitude)).setText("0.0");
-                Log.e("JESUIS", "La42");
 		((TextView)findViewById(R.id.longitude)).setText("0.0");
-                Log.e("JESUIS", "La43");
 		((TextView)findViewById(R.id.altitude)).setText("0.0");
-                Log.e("JESUIS", "La44");
 		((TextView)findViewById(R.id.adresse)).setText("");
-Log.e("JESUIS", "La45");
 		findViewById(R.id.obtenir_position).setEnabled(false);
-                Log.e("JESUIS", "La46");
 		findViewById(R.id.afficherAdresse).setEnabled(false);
-                Log.e("JESUIS", "La47");
 	}
 
 	private void choisirSource() {
@@ -119,7 +109,7 @@ Log.e("JESUIS", "La45");
 		//sur la source (le provider) choisie, toute les minutes (60000millisecondes).
 		//Le paramètre this spécifie que notre classe implémente LocationListener et recevra
 		//les notifications.
-		lManager.requestLocationUpdates(choix_source, 60000, 0, this);
+		lManager.requestLocationUpdates(choix_source, 5000, 0, this);
 	}
 
 	private void afficherLocation() {
@@ -195,5 +185,10 @@ Log.e("JESUIS", "La45");
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		Log.i("Tuto géolocalisation", "Le statut de la source a changé.");
 	}
+
+  private void demarrerService() {
+    Intent serviceIntent = new Intent(this, TracePositionService.class);
+    startService(serviceIntent);
+  }
 
 }
