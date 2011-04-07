@@ -91,13 +91,50 @@
 		android:layout_below="@+id/LinearLayout01"
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="10dip" />
-
+    
+	<LinearLayout android:id="@+id/LinearLayout02"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/LinearLayout01"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="10dip">
+      
    <Button android:layout_height="wrap_content"
     android:text="Démarrer service"
     android:layout_width="100dip"
-    android:layout_below="@+id/LinearLayout01"
-    android:layout_marginTop="20dip"
-    android:layout_centerHorizontal="true"
     android:id="@+id/demarrerService" />
+
+   <Button android:layout_height="wrap_content"
+    android:text="Arreter service"
+    android:layout_width="100dip"
+    android:id="@+id/arreterService" />
+  </LinearLayout>
+  
+  
+	<LinearLayout android:id="@+id/LinearLayout03"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/LinearLayout02"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="10dip">
+      
+	  <EditText android:text="5000"
+		android:id="@+id/te_mintime"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:editable="true"
+		android:focusable="true"
+		android:gravity="center"
+		android:layout_width="150dip" />      
+    
+	  <EditText android:text="0"
+		android:id="@+id/te_mindistance"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:editable="true"
+		android:focusable="true"
+		android:gravity="center"
+		android:layout_width="150dip" />
+  </LinearLayout>
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class GeopositionActivity extends Activity implements OnClickListener, Lo
     private LocationManager lManager;
     private Location location;
     private String choix_source = "";
+    private LogsPosition lposition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,9 @@ public class GeopositionActivity extends Activity implements OnClickListener, Lo
 			break;
 		case R.id.demarrerService:
 			demarrerService();
+			break;
+		case R.id.arreterService:
+			arreterService();
 			break;
 		default:
 			break;
@@ -186,9 +191,25 @@ public class GeopositionActivity extends Activity implements OnClickListener, Lo
 		Log.i("Tuto géolocalisation", "Le statut de la source a changé.");
 	}
 
+  public void setAltitude(String a){
+   ((TextView)findViewById(R.id.TextView03)).setText(a);
+  }
+
   private void demarrerService() {
-    Intent serviceIntent = new Intent(this, TracePositionService.class);
-    startService(serviceIntent);
+    Log.e("DEBUG","demarrer service");
+    Log.e("DEBUG","le getString "+ ((EditText)findViewById(R.id.te_mintime)).getText().toString());
+    long mintime = Long.parseLong(((EditText)findViewById(R.id.te_mintime)).getText().toString());
+    Log.e("DEBUG","recup de mintime");
+    float mindistance = Float.parseFloat(((EditText)findViewById(R.id.te_mindistance)).getText().toString());
+    Log.e("DEBUG","recup de mindistance");
+    lManager.requestLocationUpdates(choix_source, mintime, mindistance, this.lposition=new LogsPosition(this));
+    //Intent serviceIntent = new Intent(this, TracePositionService.class);
+    //startService(serviceIntent);
+  }
+
+  private void arreterService() {
+    //TODO A changer, je ne garde que le dernier listener dans lposition.
+    lManager.removeUpdates(this.lposition);
   }
 
 }
