@@ -58,10 +58,15 @@ public class GeopositionActivity extends Activity implements OnClickListener, Lo
 			afficherAdresse();
 			break;
 		case R.id.demarrerService:
-			demarrerService();
+      envoiHTTP();
+			//demarrerService();
 			break;
 		case R.id.arreterService:
+      envoiHTTP();
 			arreterService();
+			break;
+		case R.id.envoiHttp:
+			envoiHTTP();
 			break;
 		default:
 			break;
@@ -210,6 +215,12 @@ public class GeopositionActivity extends Activity implements OnClickListener, Lo
   private void arreterService() {
     //TODO A changer, je ne garde que le dernier listener dans lposition.
     lManager.removeUpdates(this.lposition);
+  }
+
+  private void envoiHTTP() {
+    Log.e("DEBUG","push 1");
+    if (this.lposition==null) this.lposition=new LogsPosition(this);
+    this.lposition.HttpPush(null, this);
   }
 
 }

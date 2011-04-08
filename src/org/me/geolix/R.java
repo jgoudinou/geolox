@@ -24,6 +24,7 @@ public final class R {
         public static final int arreterService=0x7f04000e;
         public static final int choix_source=0x7f040008;
         public static final int demarrerService=0x7f04000d;
+        public static final int envoiHttp=0x7f040012;
         public static final int latitude=0x7f040002;
         public static final int longitude=0x7f040004;
         public static final int obtenir_position=0x7f040009;

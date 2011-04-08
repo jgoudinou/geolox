@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
+import java.util.logging.Handler;
 
 /**
  *
@@ -70,12 +71,65 @@ public class LogsPosition extends SQLiteOpenHelper implements LocationListener {
 
     csr.close();
     csr.deactivate();
+  }
 
 
+  public static Thread performOnBackgroundThread(final Runnable runnable) {
+    final Thread t = new Thread() {
+        @Override
+        public void run() {
+            try {
+                runnable.run();
+            } finally {
+
+            }
+        }
+    };
+    t.start();
+    return t;
+   }
+
+  public Thread HttpPush(final Handler handler, final Context context) {
+    Log.d("DEBUG", "Push 2");
+      final Runnable runnable = new Runnable() {
+          public void run() {
+            Log.e("DEBUG", "Push 3");
+            NetworkUtilities.pushPositions("TeepH", serializePositions(10));
+            Log.e("DEBUG", "Push 5");
+          }
+      };
+      // run on background thread.
+      return LogsPosition.performOnBackgroundThread(runnable);
+  }
+
+  protected synchronized String serializePositions(int nb){
+    Log.e("DEBUG", "Push 4");
+    Cursor csr = this.getReadableDatabase().query(TABLE_NAME,null, null, null, null, null, null, String.valueOf(nb));
+    Log.e("DEBUG","Nombre de positions : "+String.valueOf(csr.getCount()));
+
+    int latitude=csr.getColumnIndex("LATITUDE");
+    int longitude=csr.getColumnIndex("LONGITUDE");
+    int altitude=csr.getColumnIndex("ALTITUDE");
+    int vitesse=csr.getColumnIndex("VITESSE");
+    int heurelog=csr.getColumnIndex("HEURE_LOG");
+
+    String data="TST";
+    while(csr.moveToNext()){
+      data.concat(String.valueOf(csr.getFloat(latitude)).concat(";"));
+      data.concat(String.valueOf(csr.getFloat(longitude)).concat(";"));
+      data.concat(String.valueOf(csr.getFloat(altitude)).concat(";"));
+      data.concat(String.valueOf(csr.getFloat(vitesse)).concat(";"));
+      data.concat(String.valueOf(csr.getFloat(heurelog)).concat(";"));
+      data.concat("|");
+    }
+
+    csr.close();
+    csr.deactivate();
+    return data;
   }
 
   public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-    Log.e("DEBUG",arg0);
+    Log.e("DEBUG","Le status de "+arg0+" a changé");
   }
 
   public void onProviderEnabled(String arg0) {

@@ -137,4 +137,11 @@
 		android:layout_width="150dip" />
   </LinearLayout>
 
+
+   <Button android:layout_height="wrap_content"
+    android:text="PushHTTP"
+    android:layout_width="100dip"
+    android:layout_below="@+id/LinearLayout03"
+    android:id="@+id/envoiHttp" />
+
 </RelativeLayout>
